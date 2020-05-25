@@ -1,6 +1,10 @@
-FROM ruby:2.7.1-alpine
+FROM ruby:2.7.1
+
+RUN apt-get update && apt-get install sqlite3 libsqlite3-dev -y
 
 WORKDIR /app
+
+ENV BUILD_PACKAGES="sqlite sqlite-devel"
 
 COPY Gemfile Gemfile.lock ./
 RUN bundle install
