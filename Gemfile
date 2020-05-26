@@ -14,8 +14,9 @@ gem 'rake'
 
 gem 'activerecord' ,  '5.2.3'
 
+gem 'sqlite3', '~> 1.3.6'
+
 group :development do
-  gem 'sqlite3'
   gem 'rubocop'
   gem 'rubocop-performance'
   gem 'rubocop-config-prettier'
