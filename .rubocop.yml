@@ -1,0 +1,14 @@
+AllCops:
+  NewCops: enable
+  Exclude:
+    - 'db/**/*'
+    - 'config/**/*'
+    - 'db/schema.rb'
+inherit_from: .rubocop_todo.yml
+inherit_gem:
+  rubocop-config-prettier: config/rubocop.yml
+Style/FrozenStringLiteralComment:
+  Enabled: false
+Metrics/BlockLength:
+  Exclude:
+    - 'db/schema.rb'
