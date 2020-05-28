@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -12,42 +10,44 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_200_526_100_722) do
-  create_table 'contributions', force: :cascade do |t|
-    t.string 'body', null: false
-    t.string 'image'
-    t.string 'status', null: false
-    t.string 'priority', null: false
-    t.integer 'user_id'
-    t.integer 'group_id'
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.index ['group_id'], name: 'index_contributions_on_group_id'
-    t.index ['user_id'], name: 'index_contributions_on_user_id'
+ActiveRecord::Schema.define(version: 2020_05_26_100722) do
+
+  create_table "contributions", force: :cascade do |t|
+    t.string "body", null: false
+    t.string "image"
+    t.string "status", null: false
+    t.string "priority", null: false
+    t.integer "user_id"
+    t.integer "group_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["group_id"], name: "index_contributions_on_group_id"
+    t.index ["user_id"], name: "index_contributions_on_user_id"
   end
 
-  create_table 'groups', force: :cascade do |t|
-    t.string 'name', null: false
-    t.string 'description'
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
+  create_table "groups", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
-  create_table 'user_groups', force: :cascade do |t|
-    t.integer 'user_id'
-    t.integer 'group_id'
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.index ['group_id'], name: 'index_user_groups_on_group_id'
-    t.index ['user_id'], name: 'index_user_groups_on_user_id'
+  create_table "user_groups", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "group_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["group_id"], name: "index_user_groups_on_group_id"
+    t.index ["user_id"], name: "index_user_groups_on_user_id"
   end
 
-  create_table 'users', force: :cascade do |t|
-    t.string 'name', null: false
-    t.string 'email', null: false
-    t.string 'password', null: false
-    t.string 'role', default: 'member', null: false
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
+  create_table "users", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "email", null: false
+    t.string "password", null: false
+    t.string "role", default: "member", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
+
 end
