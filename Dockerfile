@@ -14,5 +14,4 @@ ENTRYPOINT [ "/docker-entrypoint.sh" ]
 
 COPY . ./
 
-CMD ["ruby", "app.rb", "-o", "0.0.0.0"]
 EXPOSE 4567
