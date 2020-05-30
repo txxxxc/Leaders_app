@@ -7,6 +7,8 @@ require 'sinatra/reloader' if development?
 require './models/models.rb'
 require 'pry'
 
+enable :sessions
+
 
 # *** get ***
 
@@ -21,11 +23,16 @@ end
 
 # 新規登録画面
 get '/signup' do
-
+  erb :signup
 end
 
 # ログイン画面
 get '/signin' do
+
+end
+
+# ログイン成功
+get '/signin_success' do
 
 end
 
@@ -63,7 +70,17 @@ end
 
 # ユーザーの作成
 post '/create_user' do
-
+  if params[:password] == params[:confirm]
+    User.create(
+    name: params[:name],
+    email: params[:email],
+    password: params[:password],
+    role: 'member'
+  )
+  else
+    redirect '/signin'
+  end
+  redirect '/signin_success'
 end
 
 # ログイン

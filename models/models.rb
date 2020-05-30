@@ -9,8 +9,8 @@ class User < ActiveRecord::Base
   has_many :contributions
   validates :name, presence: true, length: { in: 2..50 }
   validates :email, presence: true, format: { with: VALID_EMAIL_REGEX }
-  validates :password, presence: true
   validates :role, presence: true
+  has_secure_password
 end
 
 class Group < ActiveRecord::Base
