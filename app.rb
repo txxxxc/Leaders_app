@@ -9,31 +9,53 @@ require 'pry'
 
 enable :sessions
 
+helpers do
+  def logged_in?
+    !!session[:user_id]
+  end
+
+  def current_user
+    User.find(session[:user_id])
+  end
+end
+
 
 # *** get ***
 
 # ホーム画面
 get '/' do
-  @user = User.first
-  @group = Group.first
-  @contribution = Contribution.first
-  binding.pry
-  erb :index
+  p session
+  if logged_in?
+    @user = current_user
+    p @user
+    erb :home
+  else
+    erb :lp
+  end
 end
 
 # 新規登録画面
 get '/signup' do
-  erb :signup
+  if logged_in?
+    redirect '/'
+  else
+    erb :signup
+  end
 end
 
 # ログイン画面
 get '/signin' do
-
+  if logged_in?
+    redirect '/'
+  else
+    erb :signin
+  end
 end
 
 # ログイン成功
-get '/signin_success' do
+get '/signup_success' do
 
+  erb :signup_success
 end
 
 # 権限付与画面
@@ -71,16 +93,21 @@ end
 # ユーザーの作成
 post '/create_user' do
   if params[:password] == params[:confirm]
-    User.create(
-    name: params[:name],
-    email: params[:email],
-    password: params[:password],
-    role: 'member'
-  )
+    user = User.new(
+      name: params[:name],
+      email: params[:email],
+      password: params[:password],
+      role: 'member'
+    )
+    if user.save
+      session[:user_id] = user.id
+    else
+      redirect '/signup'
+    end
   else
-    redirect '/signin'
+    redirect '/signup'
   end
-  redirect '/signin_success'
+  redirect '/signup_success'
 end
 
 # ログイン
