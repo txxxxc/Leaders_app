@@ -22,3 +22,5 @@ Style/IfUnlessModifier:
   Enabled: false
 Style/AsciiComments:
   Enabled: false
+Style/DoubleNegation:
+  Enabled: false
