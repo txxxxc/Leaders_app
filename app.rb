@@ -24,10 +24,9 @@ end
 
 # ホーム画面
 get '/' do
-  p session
   if logged_in?
     @user = current_user
-    p @user
+    p session[:user_id]
     erb :home
   else
     erb :lp
@@ -56,6 +55,12 @@ end
 get '/signup_success' do
 
   erb :signup_success
+end
+
+# ログアウト
+get '/logout' do
+  session[:user_id] = nil
+  redirect '/'
 end
 
 # 権限付与画面
@@ -112,12 +117,17 @@ end
 
 # ログイン
 post '/signin' do
-
-end
-
-# ログアウト
-post '/logout' do
-
+  user = User.find_by(email: params[:email])
+  if user
+    if user.authenticate(params[:password])
+      session[:user_id] = user.id
+      redirect '/'
+    else
+      redirect '/signin'
+    end
+  else
+    redirect '/signin'
+  end
 end
 
 # メンター権限の付与

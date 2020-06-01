@@ -1,0 +1,9 @@
+.signin__container {
+  height: 100vh;
+  display: flex;
+  max-width: 330px;
+  /* align-items: center; */
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+}
