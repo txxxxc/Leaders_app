@@ -17,80 +17,101 @@ helpers do
   def current_user
     User.find(session[:user_id])
   end
+
+  def login_required
+    redirect '/login' if session[:user_id].nil?
+  end
+
+  def logout_required
+    p session[:user_id]
+    redirect '/' if session[:user_id]
+  end
 end
 
+before do
+  @logged_in = logged_in?
+end
 
 # *** get ***
 
-# ホーム画面
-get '/' do
-  if logged_in?
-    @user = current_user
-    p session[:user_id]
-    erb :home
-  else
-    erb :lp
-  end
-end
+### ログインいらない
 
 # 新規登録画面
 get '/signup' do
-  if logged_in?
-    redirect '/'
-  else
-    erb :signup
-  end
+  logout_required
+  @page_title = "signup"
+  erb :signup
 end
 
 # ログイン画面
-get '/signin' do
-  if logged_in?
-    redirect '/'
-  else
-    erb :signin
-  end
+get '/login' do
+  logout_required
+  @page_title = "login"
+  erb :login
 end
 
-# ログイン成功
-get '/signup_success' do
+# lp(命名微妙です)
 
-  erb :signup_success
+get '/lp' do
+  logout_required
+  erb :lp
+end
+
+######################
+
+### ログイン必要
+
+# ホーム画面
+get '/' do
+  login_required
+  @page_title = "home"
+  @user = current_user
+  erb :home
 end
 
 # ログアウト
 get '/logout' do
+  login_required
   session[:user_id] = nil
-  redirect '/'
+  p session[:user_id]
+  redirect '/login'
+end
+
+# ログイン成功
+get '/signup_success' do
+  login_required
+  @page_title = "signup success"
+  erb :signup_success
 end
 
 # 権限付与画面
 get '/give_permisson/:id' do
-
+  login_required
 end
 
 # グループ作成画面
 get '/create_group' do
-
+  login_required
 end
 
 # グループ画面
 get '/group/:id' do
-
+  login_required
 end
 
 # 投稿画面
 get '/create_contribution' do
-
+  login_required
 end
 
 # 投稿編集画面
 get '/edit_contribution/:id' do
-
+  login_required
 end
 
 # 投稿削除画面
 get '/confirm_destroy_contribution/:id' do
-
+  login_required
 end
 
 # *** post ***
@@ -116,17 +137,17 @@ post '/create_user' do
 end
 
 # ログイン
-post '/signin' do
+post '/login' do
   user = User.find_by(email: params[:email])
   if user
     if user.authenticate(params[:password])
       session[:user_id] = user.id
       redirect '/'
     else
-      redirect '/signin'
+      redirect '/login'
     end
   else
-    redirect '/signin'
+    redirect '/login'
   end
 end
 
