@@ -1,9 +1,12 @@
-.signin__container {
-  height: 100vh;
+.login__container {
+  height: 80vh;
   display: flex;
   max-width: 330px;
   /* align-items: center; */
   justify-content: center;
   flex-direction: column;
-  text-align: center;
+}
+
+.login__form {
+  text-align:center;
 }
