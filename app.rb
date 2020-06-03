@@ -30,6 +30,7 @@ end
 
 before do
   @logged_in = logged_in?
+  @user = current_user if @logged_in
 end
 
 # *** get ***
@@ -39,14 +40,14 @@ end
 # 新規登録画面
 get '/signup' do
   logout_required
-  @page_title = "signup"
+  @page_title = "新規登録"
   erb :signup
 end
 
 # ログイン画面
 get '/login' do
   logout_required
-  @page_title = "login"
+  @page_title = "ログイン"
   erb :login
 end
 
