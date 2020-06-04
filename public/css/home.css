@@ -1,0 +1,16 @@
+.home__container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  padding-top: 60px;
+}
+
+.home__card:hover {
+  opacity: 0.7;
+}
+
+.home__card {
+  width: 22%;
+  margin-right: 3%;
+  margin-top: 20px;
+}

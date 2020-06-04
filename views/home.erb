@@ -1,2 +1,11 @@
 <div class="container home__container">
+  <% @groups.each do |group| %>
+    <div class="card home__card">
+      <div class="card-body">
+        <h5 class="card-title"><%= group.name %></h5>
+        <p class="card-text"><%= group.description %></p>
+        <a href="/group/<%= group.id %>" class="home__card-link stretched-link"></a>
+      </div>
+    </div>
+  <% end %>
 </div>

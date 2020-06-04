@@ -67,6 +67,7 @@ get '/' do
   login_required
   @page_title = "home"
   @user = current_user
+  @groups = @user.groups
   erb :home
 end
 
@@ -98,6 +99,10 @@ end
 # グループ画面
 get '/group/:id' do
   login_required
+  @group = Group.find_by(id: params[:id])
+  @page_title = @group.name
+  # binding.pry
+  erb :group
 end
 
 # 投稿画面
