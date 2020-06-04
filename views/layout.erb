@@ -10,17 +10,19 @@
     <link rel="stylesheet" href="/css/signup_success.css">
     <link rel="stylesheet" href="/css/login.css">
     <link rel="stylesheet" href="/css/lp.css">
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/group.css">
 </head>
 <body>
     <nav class="fixed-top navbar navbar-expand navbar-dark bg-dark">
         <% if @logged_in %>
-            <a href="/" class="navbar-brand">Home</a>
             <div class="collaps navbar-collapse">
-                <ul class="navbar-nav mr-auto">
+                <a href="/" class="navbar-brand">Home</a>
+                <%# <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
                         <a href="/group" class="nav-link">Group</a>
                     </li>
-                </ul>
+                </ul> %>
             </div>
             <div class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
