@@ -46,6 +46,7 @@ ActiveRecord::Schema.define(version: 2020_05_30_131331) do
     t.string "email", null: false
     t.string "password_digest", null: false
     t.string "role", default: "member", null: false
+    t.string "image", default: "/img/person.svg", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
