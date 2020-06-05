@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
   has_many :groups, through: :user_groups
   has_many :contributions
   validates :name, presence: true, length: { in: 2..50 }
+  validates :screen_name, presence: true, length: { in: 4..15 }
   validates :email, presence: true, format: { with: VALID_EMAIL_REGEX }
   validates :role, presence: true
   has_secure_password

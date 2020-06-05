@@ -127,6 +127,7 @@ post '/create_user' do
   if params[:password] == params[:confirm]
     user = User.new(
       name: params[:name],
+      screen_name: params[:screen_name],
       email: params[:email],
       password: params[:password],
       role: 'member'

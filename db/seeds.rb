@@ -1,7 +1,8 @@
 5.times do |n|
   puts n
   User.create!(
-    name: "メンバー#{n + 1}",
+    name: "member#{n + 1}",
+    screen_name: "メンバー#{n + 1}",
     email: "member#{n + 1}@test.com",
     password: "test",
     role: "member"
@@ -9,7 +10,8 @@
 end
 
 User.create!(
-  name: 'メンター',
+  name: "test_mentor",
+  screen_name: 'メンター',
   email: 'mentor@test.com',
   password: 'test',
   role: 'mentor'
@@ -40,7 +42,8 @@ end
 ## テストユーザー
 
 user = User.create!(
-  name: 'Test',
+  name: 'test-user-1',
+  screen_name: 'テストユーザー',
   email: 'test@test.com',
   password: 'test',
   role: 'member'

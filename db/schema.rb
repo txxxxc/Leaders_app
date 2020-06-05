@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_30_131331) do
+ActiveRecord::Schema.define(version: 2020_06_05_200230) do
 
   create_table "contributions", force: :cascade do |t|
     t.string "body", null: false
@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(version: 2020_05_30_131331) do
     t.string "image", default: "/img/person.svg", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "screen_name", null: false
   end
 
 end
