@@ -9,7 +9,7 @@
   </nav>
   <div class="tab-content" id="nav-tabContent">
     <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-      <form  class="group__question-form" action='/create_contribution/<%=@user.id %>/<%=@group.id%>' method='POST'>
+      <form class="group__question-form" action='/create_contribution/<%=@user.id %>/<%=@group.id%>' method='POST'>
         <div class="form-group">
           <label for="exampleFormControlTextarea1">内容</label>
           <textarea name="body" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
@@ -51,6 +51,22 @@
                 <% end %>
               </div>
             </div>
+            <% if contribution.user_id == @user.id %>
+              <div class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="hoge" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="hoge">
+                    <a class="dropdown-item" href="/edit_contribution/<%= contribution.group_id %>/<%= contribution.id %>">編集</a>
+                    <a class="dropdown-item" href="/confirm_destroy_contribution/<%= contribution.group_id %>/<%= contribution.id %>">削除</a>
+                </div>
+              </div>
+            <% elsif @user.role == 'mentor' %>
+              <div class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="hoge" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+                <div class="dropdown-menu dropdown-menu-right " aria-labelledby="hoge">
+                    <a class="dropdown-item" href="/confirm_destroy_contribution/<%= contribution.group_id %>/<%= contribution.id %>">削除</a>
+                  </div>
+              </div>
+            <% end %>
           </div>
         </div>
       <% end %>

@@ -106,19 +106,13 @@ get '/group/:id' do
   erb :group
 end
 
-# 投稿画面
-get '/create_contribution' do
-  login_required
-end
-
-# 投稿編集画面
-get '/edit_contribution/:id' do
-  login_required
-end
 
 # 投稿削除画面
-get '/confirm_destroy_contribution/:id' do
+get '/confirm_destroy_contribution/:group_id/:contribution_id' do
   login_required
+  @contribution = Contribution.find_by(id: params[:contribution_id])
+  @group_id = params[:group_id]
+  erb :destroy_contribution
 end
 
 # *** post ***
@@ -187,15 +181,28 @@ post '/change_status/:id' do
 end
 
 
+# 投稿編集画面
+get '/edit_contribution/:group_id/:contribution_id' do
+  login_required
+  @page_title = "投稿編集ページ"
+  @contribution = Contribution.find_by(id: params[:contribution_id])
+  @group_id = params[:group_id]
+  erb :edit_contribution
+end
 
 # 投稿の編集
-post '/edit_contribution/:id' do
-
+post '/edit_contribution/:group_id/:contribution_id' do
+  contribution = Contribution.find_by(id: params[:contribution_id])
+  contribution.body = params[:body]
+  contribution.save
+  redirect "/group/#{params[:group_id]}"
 end
 
 # 投稿の削除
-post '/destroy_contribution/:id' do
-
+post '/destroy_contribution/:group_id/:contribution_id' do
+  # データが見つからなかった時のエラーハンドリングが後々必要
+  Contribution.find_by(id: params[:contribution_id]).destroy
+  redirect "/group/#{params[:group_id]}"
 end
 
 # 投稿の新規作成

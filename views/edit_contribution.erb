@@ -1,0 +1,9 @@
+<div class="container edit__container">
+  <form  class="" action='/edit_contribution/<%= @group_id %>/<%= @contribution.id %>' method='POST'>
+    <div class="form-group">
+      <label for="exampleFormControlTextarea1">内容</label>
+      <textarea name="body" class="form-control" id="exampleFormControlTextarea1" rows="3"><%= @contribution.body %></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary mb-2">投稿</button>
+  </form>
+</div>
