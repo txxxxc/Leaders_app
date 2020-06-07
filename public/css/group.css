@@ -1,3 +1,51 @@
 .group__container {
+  margin-top: 30px;
   padding-top: 30px;
+  background-color: white;
+  min-height: 90vh;
+}
+
+.group__tab {
+  padding-top: 30px;
+}
+
+.group__card {
+  display: flex;
+  flex-direction: row;
+}
+
+.group__question-form {
+  padding-top: 20px;
+}
+
+.card {
+  margin-top: 30px;
+}
+
+.card__container {
+  width: 100%;
+}
+
+.card__icon-container {
+  padding-right: 1em;
+}
+
+.card__user-icon {
+  border: solid 1px black;
+}
+
+.card__information {
+  display: flex;
+  width: 100%;
+}
+.card__priority {
+  width: 200px;
+}
+
+.card__status {
+  width: 200px;
+}
+
+.card__status, .card__priority {
+  margin-left: 20px;
 }

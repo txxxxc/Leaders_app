@@ -100,8 +100,9 @@ end
 get '/group/:id' do
   login_required
   @group = Group.find_by(id: params[:id])
+  @group_users = @group.users
+  @contributions = @group.contributions
   @page_title = @group.name
-  # binding.pry
   erb :group
 end
 
@@ -173,11 +174,18 @@ post '/invite_user/:id' do
 
 end
 
-
+post '/change_priority/:id' do
+  contribution = Contribution.find_by(id: params[:id])
+  contribution.priority = params[:priority]
+  contribution.save
+end
 # ステータスの変更
 post '/change_status/:id' do
-
+  contribution = Contribution.find_by(id: params[:id])
+  contribution.status = params[:status]
+  contribution.save
 end
+
 
 
 # 投稿の編集
@@ -191,6 +199,13 @@ post '/destroy_contribution/:id' do
 end
 
 # 投稿の新規作成
-post '/create_contribution' do
-
+post '/create_contribution/:user_id/:group_id' do
+  Contribution.create!(
+    body: params[:body],
+    status: 'new',
+    priority: params[:priority],
+    user_id: params[:user_id],
+    group_id: params[:group_id]
+  )
+  redirect "group/#{params[:group_id]}"
 end
