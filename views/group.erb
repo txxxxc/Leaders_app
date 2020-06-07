@@ -1,12 +1,130 @@
 <div class="container group__container">
-  <nav>
-  <div class="nav nav-tabs" id="nav-tab" role="tablist">
-    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">TOP</a>
-    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">メンバー</a>
-  </div>
+  <h1><%= @group.name %></h1>
+
+  <nav class="group__tab">
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+      <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">TOP</a>
+      <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">メンバー</a>
+    </div>
   </nav>
   <div class="tab-content" id="nav-tabContent">
-    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">...</div>
-    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">...</div>
+    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+      <form  class="group__question-form" action='/create_contribution/<%=@user.id %>/<%=@group.id%>' method='POST'>
+        <div class="form-group">
+          <label for="exampleFormControlTextarea1">内容</label>
+          <textarea name="body" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="exampleFormControlSelect1">どれくらいやばい？</label>
+          <select name="priority" class="form-control" id="exampleFormControlSelect1">
+            <option value="high">やばい</option>
+            <option value="medium">まあまあ</option>
+            <option value="low">できれば</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary mb-2">投稿</button>
+      </form>
+      <% @contributions.each do |contribution| %>
+        <div class="card">
+          <div class="card-body group__card">
+            <div class="card__icon-container">
+              <img class="card__user-icon rounded-circle img-fluid" src="<%= contribution.user.image %>" width="32px" height="32px" alt="" >
+            </div>
+            <div class="card__container">
+              <h5 class="card-title"><%= contribution.user.name %></h5>
+              <p class="card-text"><%= contribution.body %></p>
+              <div class="card__information">
+                <p class="card-text"><small class="text-muted"><%= contribution.created_at %></small></p>
+
+
+                <% if contribution.user_id == @user.id || @user.role == 'mentor' %>
+                  <select class="form-control card__priority" name="priority <%=contribution.id %>">
+                    <option value="high"   <%= 'selected' if contribution.priority == 'high'%>   >やばい</option>
+                    <option value="medium" <%= 'selected' if contribution.priority == 'medium'%> >まあまあ</option>
+                    <option value="low"    <%= 'selected' if contribution.priority == 'low'%>    >できれば</option>
+                  </select>
+                  <select class="form-control card__status" name="status <%= contribution.id %>">
+                    <option value="new"   <%= 'selected' if contribution.status == 'new'%> >これから</option>
+                    <option value="doing" <%= 'selected' if contribution.status == 'doing'%> >取り掛かり中</option>
+                    <option value="done"  <%= 'selected' if contribution.status == 'done'%> >終わり</option>
+                  </select>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">名前</th>
+            <th scope="col">役割</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @group_users.each do |user| %>
+          <tr>
+            <th scope="row">
+              <img class="group__user-icon" src="<%= user.image %>" width="24px" height="24px" alt="">
+            </th>
+            <td><%= user.screen_name %></td>
+            <td><%= user.role %></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
+<script>
+  $(function() {
+    //セレクトボックスが切り替わったら発動
+    $('select').change(function() {
+      //選択したvalue値を変数に格納
+      const val = $(this).val();
+      const information = $(this)[0].name.split(' ')
+      const name = information[0]
+      const id = information[1]
+      switch(name) {
+        case 'priority':
+          $.ajax({
+            url: `/change_priority/${id}`,
+            method: "POST",
+            data: {
+              priority: val
+            },
+          }).then(n => {
+              console.log({n})
+            },
+            (XMLHttpRequest, textStatus, errorThrown) => {
+              console.log("XMLHttpRequest : " + XMLHttpRequest.status);
+              console.log("textStatus     : " + textStatus);
+              console.log("errorThrown    : " + errorThrown.message);
+          })
+          break;
+        case 'status':
+          $.ajax({
+            url: `/change_status/${id}`,
+            method: "POST",
+            data: {
+              status: val
+            },
+          }).then(n => {
+              console.log({n})
+            },
+            (XMLHttpRequest, textStatus, errorThrown) => {
+              console.log("XMLHttpRequest : " + XMLHttpRequest.status);
+              console.log("textStatus     : " + textStatus);
+              console.log("errorThrown    : " + errorThrown.message);
+          })
+          break;
+        default:
+          console.log('default')
+      }
+    });
+  });
+</script>
