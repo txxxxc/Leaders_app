@@ -1,0 +1,7 @@
+<div class="container destroy-contribution__container">
+  <h3>本当に削除しますか？</h3>
+  <form class="destroy-contribution__choices" action="/destroy_contribution/<%= @contribution.group_id %>/<%= @contribution.id %>" method="POST">
+    <a class="btn btn-primary" href="/group/<%= @contribution.group_id %>" role="button">キャンセルする</a>
+    <button type="submit" class="btn btn-danger">削除する</button>
+  </form>
+</div>
