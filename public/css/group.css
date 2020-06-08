@@ -18,6 +18,11 @@
   padding-top: 20px;
 }
 
+.group__invite-form {
+  display: flex;
+  padding: 20px 0;
+}
+
 .card {
   margin-top: 30px;
 }
@@ -38,6 +43,7 @@
   display: flex;
   width: 100%;
 }
+
 .card__priority {
   width: 200px;
 }
@@ -46,6 +52,7 @@
   width: 200px;
 }
 
-.card__status, .card__priority {
+.card__status,
+.card__priority {
   margin-left: 20px;
 }

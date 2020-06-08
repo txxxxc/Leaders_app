@@ -192,8 +192,15 @@ post '/create_group' do
 end
 
 # ユーザーをグループへ招待
-post '/invite_user/:id' do
-
+post '/invite_user/:group_id/:user_id' do
+  group_id = params[:group_id]
+  user = User.find_by(name: params[:user_id])
+  if !!user
+    UserGroup.create!(
+      user_id: user.id,
+      group_id: group_id
+    )
+  end
 end
 
 post '/change_priority/:id' do
