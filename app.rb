@@ -26,11 +26,16 @@ helpers do
     p session[:user_id]
     redirect '/' if session[:user_id]
   end
+
+  def mentor?
+    @user.role == 'mentor' if @user
+  end
 end
 
 before do
   @logged_in = logged_in?
   @user = current_user if @logged_in
+  @is_mentor = mentor?
 end
 
 # *** get ***
@@ -94,6 +99,8 @@ end
 # グループ作成画面
 get '/create_group' do
   login_required
+  redirect '/' unless mentor?
+  erb :create_group
 end
 
 # グループ画面
@@ -103,9 +110,21 @@ get '/group/:id' do
   @group_users = @group.users
   @contributions = @group.contributions
   @page_title = @group.name
+  @role = {
+    'mentor': 'メンター',
+    'member': 'メンバー'
+  }
   erb :group
 end
 
+# 投稿編集画面
+get '/edit_contribution/:group_id/:contribution_id' do
+  login_required
+  @page_title = "投稿編集ページ"
+  @contribution = Contribution.find_by(id: params[:contribution_id])
+  @group_id = params[:group_id]
+  erb :edit_contribution
+end
 
 # 投稿削除画面
 get '/confirm_destroy_contribution/:group_id/:contribution_id' do
@@ -160,7 +179,16 @@ end
 
 # グループの作成
 post '/create_group' do
+  group = Group.create(
+    name: params[:name],
+    description: params[:description]
+  )
+  UserGroup.create(
+    group_id: group.id,
+    user_id: current_user.id
+  )
 
+  redirect "group/#{group.id}"
 end
 
 # ユーザーをグループへ招待
@@ -180,15 +208,6 @@ post '/change_status/:id' do
   contribution.save
 end
 
-
-# 投稿編集画面
-get '/edit_contribution/:group_id/:contribution_id' do
-  login_required
-  @page_title = "投稿編集ページ"
-  @contribution = Contribution.find_by(id: params[:contribution_id])
-  @group_id = params[:group_id]
-  erb :edit_contribution
-end
 
 # 投稿の編集
 post '/edit_contribution/:group_id/:contribution_id' do
