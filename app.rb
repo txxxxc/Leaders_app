@@ -27,15 +27,24 @@ helpers do
     redirect '/' if session[:user_id]
   end
 
-  def mentor?
-    @user.role == 'mentor' if @user
-  end
+  # def mentor?
+  #   @user.role == 'mentor' if @user
+  # end
+
+  # def admin?
+  #   @user.role == 'admin' if @user
+  # end
 end
 
 before do
   @logged_in = logged_in?
   @user = current_user if @logged_in
-  @is_mentor = mentor?
+  color = {
+    "admin" => 'bg-info',
+    "mentor" => 'bg-success',
+    "member" => 'bg-dark'
+  }
+  @background_color = color[@user.role] if @user
 end
 
 # *** get ***
@@ -92,14 +101,17 @@ get '/signup_success' do
 end
 
 # 権限付与画面
-get '/give_permisson/:id' do
+get '/give_permission' do
   login_required
+  redirect '/' unless @user.role == 'admin'
+  @all_mentor = User.where(role: 'mentor')
+  erb :give_permission
 end
 
 # グループ作成画面
 get '/create_group' do
   login_required
-  redirect '/' unless mentor?
+  redirect '/' unless @user.role == 'mentor' || @user.role == 'admin'
   erb :create_group
 end
 
@@ -173,8 +185,14 @@ post '/login' do
 end
 
 # メンター権限の付与
-post '/give_permisson/:id' do
-
+post '/give_permission/:user_id' do
+  user = User.find_by(name: params[:user_id])
+  if user
+    user.role = 'mentor'
+    user.save
+  end
+  p user
+  redirect '/give_permission'
 end
 
 # グループの作成

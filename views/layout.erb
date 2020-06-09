@@ -15,19 +15,29 @@
     <link rel="stylesheet" href="/css/edit_contribution.css">
     <link rel="stylesheet" href="/css/destroy_contribution.css">
     <link rel="stylesheet" href="/css/create_group.css">
+    <link rel="stylesheet" href="/css/give_permission.css">
     <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 </head>
 <body>
-    <nav class="fixed-top navbar navbar-expand navbar-dark bg-dark">
-        <% if @logged_in %>
+    <% if @logged_in %>
+        <nav class="fixed-top navbar navbar-expand navbar-dark <%= @background_color %>">
             <div class="collaps navbar-collapse">
                 <a href="/" class="navbar-brand">Home</a>
-                <% if @is_mentor %>
+                <% if @user.role == 'mentor' %>
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
                             <a href="/create_group" class="nav-link">グループを作る</a>
+                        </li>
+                    </ul>
+                <% elsif @user.role == 'admin' %>
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a href="/create_group" class="nav-link">グループを作る</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/give_permission" class="nav-link">権限を与える</a>
                         </li>
                     </ul>
                 <% end %>
@@ -44,14 +54,16 @@
                     <a class="dropdown-item" href="/logout">Logout</a>
                 </div>
             </div>
-        <% else %>
+        </nav>
+    <% else %>
+        <nav class="fixed-top navbar navbar-expand navbar-dark bg-dark">
             <a href="/lp" class="navbar-brand">Home</a>
             <div class="collaps navbar-collapse">
             </div>
             <a href="/signup" class="navbar-brand">新規登録</a>
             <a href="/login" class="navbar-brand">ログイン</a>
-        <% end %>
-    </nav>
+        </nav>
+    <% end %>
     <%= yield %>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
