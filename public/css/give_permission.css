@@ -1,0 +1,13 @@
+.permission__container {
+  height: 100%;
+  background-color: #fafafa
+}
+
+.permission__form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* flex-direction: column; */
+  margin: auto;
+  padding-top: 70px;
+}

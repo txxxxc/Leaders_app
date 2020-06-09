@@ -1,0 +1,46 @@
+<div class="container permission__container">
+  <form class="group__invite-form permission__form" id="invite-form">
+    <div class="form-group mr-2 mb-2">
+      <input type="text" class="form-control" id="give-permission-id" placeholder="ユーザーID">
+    </div>
+    <button type="button" id="give-permission-button" class="btn btn-primary mb-2">招待</button>
+  </form>
+  <h3>メンター一覧</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">名前</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @all_mentor.each do |user| %>
+        <tr>
+          <th scope="row">
+            <img class="group__user-icon" src="<%= user.image %>" width="24px" height="24px" alt="">
+          </th>
+          <td><%= user.screen_name %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+</div>
+<script>
+  $(function() {
+    $('#give-permission-button').on('click', () => {
+      const user_id = $('#give-permission-id').val()
+      $('#give-permission-id').val('')
+      $.ajax({
+        url: `/give_permission/${user_id}`,
+        method: "POST"
+      }).then(n => {
+        console.log({n})
+      },
+      (XMLHttpRequest, textStatus, errorThrown) => {
+        console.log("XMLHttpRequest : " + XMLHttpRequest.status);
+        console.log("textStatus     : " + textStatus);
+        console.log("errorThrown    : " + errorThrown.message);
+      })
+    })
+  });
+</script>
