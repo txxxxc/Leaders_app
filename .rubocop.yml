@@ -12,6 +12,7 @@ Style/FrozenStringLiteralComment:
 Metrics/BlockLength:
   Exclude:
     - 'db/schema.rb'
+    - './app.rb'
 Style/Documentation:
   Enabled: false
 Style/ClassAndModuleChildren:

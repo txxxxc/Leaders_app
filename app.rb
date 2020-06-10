@@ -126,6 +126,26 @@ get '/group/:id' do
     'mentor': 'メンター',
     'member': 'メンバー'
   }
+  @priority_color = {
+    'high' => 'bg-danger',
+    'medium' => 'dg-warning',
+    'low' => 'dg-primary'
+  }
+  @status_color = {
+    'new' => 'bg-info',
+    'doing' => 'bg-primary',
+    'done' => 'bg-success',
+  }
+  @priority_badge = {
+    'high' => ['badge-danger', 'やばい'],
+    'medium' => ['badge-warning', 'まあまあ'],
+    'low' => ['badge-primary', 'できれば']
+  }
+  @status_badge = {
+    'new' => ['badge-info', 'これから'],
+    'doing' => ['badge-primary', '取り掛かり中'],
+    'done' => ['badge-success', '終わり']
+  }
   erb :group
 end
 

@@ -38,19 +38,25 @@
               <div class="card__information">
                 <p class="card-text"><small class="text-muted"><%= contribution.created_at %></small></p>
 
-
+              <%# ここのコード汚すぎへんか？ %>
                 <% if contribution.user_id == @user.id || @user.role == 'mentor' %>
-                  <select class="form-control card__priority" name="priority <%=contribution.id %>">
+                  <select class="form-control card__priority text-white <%= @priority_color[contribution.priority]%>" id="card-priority" name="priority <%=contribution.id %>">
                     <option value="high"   <%= 'selected' if contribution.priority == 'high'%>   >やばい</option>
                     <option value="medium" <%= 'selected' if contribution.priority == 'medium'%> >まあまあ</option>
                     <option value="low"    <%= 'selected' if contribution.priority == 'low'%>    >できれば</option>
                   </select>
-                  <select class="form-control card__status" name="status <%= contribution.id %>">
-                    <option value="new"   <%= 'selected' if contribution.status == 'new'%> >これから</option>
+                  <select class="form-control card__status text-white <%= @status_color[contribution.status] %>" id="card-status" name="status <%= contribution.id %>">
+                    <option value="new"   <%= 'selected' if contribution.status == 'new'%>   >これから</option>
                     <option value="doing" <%= 'selected' if contribution.status == 'doing'%> >取り掛かり中</option>
-                    <option value="done"  <%= 'selected' if contribution.status == 'done'%> >終わり</option>
+                    <option value="done"  <%= 'selected' if contribution.status == 'done'%>  >終わり</option>
                   </select>
+                <% else %>
+                  <div class="card__badge">
+                    <span class="badge <%= @priority_badge[contribution.priority][0] %>"> <%= @priority_badge[contribution.priority][1] %> </span>
+                    <span class="badge <%= @status_badge[contribution.status][0] %>"> <%= @status_badge[contribution.status][1] %> </span>
+                  </div>
                 <% end %>
+              <%# ここまで %>
               </div>
             </div>
             <% if contribution.user_id == @user.id %>
@@ -148,6 +154,13 @@
               console.log("textStatus     : " + textStatus);
               console.log("errorThrown    : " + errorThrown.message);
           })
+          const primary_color = {
+            high: 'bg-danger',
+            medium: 'bg-warning',
+            low: 'bg-primary',
+          }
+          $(this).removeClass()
+          $(this).addClass(`form-control card__priority text-white ${primary_color[val]}` )
           break;
         case 'status':
           $.ajax({
@@ -164,6 +177,13 @@
               console.log("textStatus     : " + textStatus);
               console.log("errorThrown    : " + errorThrown.message);
           })
+          const status_color = {
+            new: 'bg-info',
+            doing: 'bg-primary',
+            done: 'bg-success',
+          }
+          $(this).removeClass()
+          $(this).addClass(`form-control card__priority text-white ${status_color[val]}` )
           break;
         default:
           console.log('default')
