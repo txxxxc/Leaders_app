@@ -52,6 +52,10 @@
   width: 200px;
 }
 
+.card__badge {
+  padding-left: 10px;
+}
+
 .card__status,
 .card__priority {
   margin-left: 20px;
