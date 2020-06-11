@@ -1,0 +1,25 @@
+<div class="container profile__container">
+  <div class="flash__container"></div>
+  <div class="row profile__contents">
+    <div class="col-3 text-center profile__picture">
+      <img src="<%= @user.image %>" width="128" height="128" alt="..." class="img-thumbnail">
+    </div>
+    <form class="col-9">
+      <div class="form-group">
+        <label>表示名</label>
+        <input name="screen_name" type="text" class="form-control" value="<%= @user.screen_name %>">
+      </div>
+      <div class="form-group">
+        <label>Eメールアドレス</label>
+        <input name="email" type="email" class="form-control" value="<%= @user.email %>">
+      </div>
+      <div class="form-group">
+        <label for="exampleFormControlFile1">プロフィール画像</label>
+        <input name="image" type="file" class="form-control-file" id="exampleFormControlFile1">
+      </div>
+      <div class="text-right">
+        <button type="submit" class="btn btn-primary pull-right">変更</button>
+      </div>
+    </form>
+  </div>
+</div>

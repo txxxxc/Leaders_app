@@ -4,8 +4,16 @@ require 'bundler/setup'
 Bundler.require
 require 'sinatra'
 require 'sinatra/reloader' if development?
+require "sinatra/activerecord"
 require './models/models.rb'
 require 'pry'
+require 'carrierwave'
+require 'carrierwave/orm/activerecord'
+
+CarrierWave.configure do |config|
+  config.root = File.dirname(__FILE__) + "/public"
+end
+
 
 enable :sessions
 
@@ -128,8 +136,8 @@ get '/group/:id' do
   }
   @priority_color = {
     'high' => 'bg-danger',
-    'medium' => 'dg-warning',
-    'low' => 'dg-primary'
+    'medium' => 'bg-warning',
+    'low' => 'bg-primary'
   }
   @status_color = {
     'new' => 'bg-info',
@@ -164,6 +172,11 @@ get '/confirm_destroy_contribution/:group_id/:contribution_id' do
   @contribution = Contribution.find_by(id: params[:contribution_id])
   @group_id = params[:group_id]
   erb :destroy_contribution
+end
+
+get '/profile' do
+  login_required
+  erb :profile
 end
 
 # *** post ***

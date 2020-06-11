@@ -1,9 +1,12 @@
 # frozen_string_literal: true
 
+require './uploader/profile_images_uploader'
+
 ActiveRecord::Base.establish_connection(ENV['DATABASE_URL'] || 'sqlite3:db/development.db')
 
 class User < ActiveRecord::Base
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i.freeze
+  mount_uploader :image, ProfileImagesUploader
   has_many :user_groups
   has_many :groups, through: :user_groups
   has_many :contributions
