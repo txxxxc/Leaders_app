@@ -36,7 +36,7 @@
               <h5 class="card-title"><%= contribution.user.name %></h5>
               <p class="card-text"><%= contribution.body %></p>
               <div class="card__information">
-                <p class="card-text"><small class="text-muted"><%= contribution.created_at %></small></p>
+                <p class="card-text"><small class="text-muted"><%= contribution.created_at.in_time_zone('Tokyo').strftime("%Y/%m/%d %T") %></small></p>
 
               <%# ここのコード汚すぎへんか？ %>
                 <% if contribution.user_id == @user.id || @user.role == 'mentor' %>

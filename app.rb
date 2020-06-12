@@ -9,12 +9,28 @@ require './models/models.rb'
 require 'pry'
 require 'carrierwave'
 require 'carrierwave/orm/activerecord'
+require 'time'
 
 CarrierWave.configure do |config|
   config.root = File.dirname(__FILE__) + "/public"
   config.storage = :file
 end
 
+def how_long_ago(time)
+  if (Time.now - time) <= 60 * 60
+    # 60分以内なら
+    ((Time.now - time) / 60).to_i.to_s + "分前"
+  elsif (Time.now - time) <= 60 * 60 * 24
+    # 24時間以内なら
+    ((Time.now - time) / 3600).to_i.to_s + "時間前"
+  elsif (Date.today - time.to_date) <= 30
+    # 30日以内なら
+    (Date.today - time.to_date).to_i.to_s + "日前"
+  else
+    # それ以降
+    time
+  end
+end
 
 enable :sessions
 
@@ -91,7 +107,7 @@ get '/' do
   @page_title = "home"
   @user = current_user
   @groups = @user.groups
-  binding.pry
+  # binding.pry
   erb :home
 end
 
@@ -310,6 +326,6 @@ post '/change_profile/:id' do
   p user.image
   p user.image.url
   user.save!
-  binding.pry
+  # binding.pry
   redirect "/profile/#{user.id}"
 end
