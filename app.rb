@@ -12,6 +12,7 @@ require 'carrierwave/orm/activerecord'
 
 CarrierWave.configure do |config|
   config.root = File.dirname(__FILE__) + "/public"
+  config.storage = :file
 end
 
 
@@ -90,6 +91,7 @@ get '/' do
   @page_title = "home"
   @user = current_user
   @groups = @user.groups
+  binding.pry
   erb :home
 end
 
@@ -173,12 +175,6 @@ get '/confirm_destroy_contribution/:group_id/:contribution_id' do
   @group_id = params[:group_id]
   erb :destroy_contribution
 end
-
-get '/profile' do
-  login_required
-  erb :profile
-end
-
 # *** post ***
 
 # ユーザーの作成
@@ -292,4 +288,28 @@ post '/create_contribution/:user_id/:group_id' do
     group_id: params[:group_id]
   )
   redirect "group/#{params[:group_id]}"
+end
+
+get '/profile/:id' do
+  login_required
+  @hoge = User.find_by(id: params[:id])
+  binding.pry
+  erb :profile
+end
+
+
+post '/change_profile/:id' do
+  user = User.find_by(id: params[:id])
+  user.image = nil
+  user.update(
+    screen_name: params[:screen_name],
+    email: params[:email],
+    image: params[:image]
+  )
+  p params[:image]
+  p user.image
+  p user.image.url
+  user.save!
+  binding.pry
+  redirect "/profile/#{user.id}"
 end

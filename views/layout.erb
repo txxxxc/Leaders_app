@@ -51,7 +51,7 @@
                     <div class="px-4">
                         <p class="font-weight-bold"><%= @user.screen_name %>さん<br/><span class="text-muted"><%= @user.role %></span></p>
                     </div>
-                    <a class="dropdown-item" href="/profile">Profile</a>
+                    <a class="dropdown-item" href="/profile/<%= @user.id %>">Profile</a>
                     <a class="dropdown-item" href="/logout">Logout</a>
                 </div>
             </div>

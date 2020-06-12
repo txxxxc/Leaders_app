@@ -2,9 +2,9 @@
   <div class="flash__container"></div>
   <div class="row profile__contents">
     <div class="col-3 text-center profile__picture">
-      <img src="<%= @user.image %>" width="128" height="128" alt="..." class="img-thumbnail">
+      <img src="<%= @user.image_url %>" width="24px" height="24px" alt="" >
     </div>
-    <form class="col-9">
+    <form class="col-9" action="/change_profile/<%= @user.id %>" method="POST" enctype="multipart/form-data">
       <div class="form-group">
         <label>表示名</label>
         <input name="screen_name" type="text" class="form-control" value="<%= @user.screen_name %>">
