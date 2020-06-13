@@ -1,5 +1,9 @@
 <div class="container profile__container">
-  <div class="flash__container"></div>
+  <% if @flash %>
+    <div class="alert alert-<%= @flash["type"] %>" role="alert">
+      <%= @flash["message"] %>
+    </div>
+  <% end %>
   <div class="row profile__contents">
     <div class="col-3 text-center profile__picture">
       <img src="<%= @user.image_url %>" width="24px" height="24px" alt="" >

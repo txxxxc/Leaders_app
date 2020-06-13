@@ -27,3 +27,7 @@ gem "bcrypt", "~> 3.1"
 gem "carrierwave", "~> 2.1"
 
 gem "mini_magick", "~> 4.10"
+
+gem "sinatra-flash", "~> 0.3.0"
+
+gem "rack-flash3", "~> 1.0"

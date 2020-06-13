@@ -4,35 +4,22 @@ require 'bundler/setup'
 Bundler.require
 require 'sinatra'
 require 'sinatra/reloader' if development?
-require "sinatra/activerecord"
+require 'sinatra/activerecord'
 require './models/models.rb'
 require 'pry'
 require 'carrierwave'
 require 'carrierwave/orm/activerecord'
-require 'time'
+require 'rack-flash'
+
 
 CarrierWave.configure do |config|
   config.root = File.dirname(__FILE__) + "/public"
   config.storage = :file
 end
 
-def how_long_ago(time)
-  if (Time.now - time) <= 60 * 60
-    # 60分以内なら
-    ((Time.now - time) / 60).to_i.to_s + "分前"
-  elsif (Time.now - time) <= 60 * 60 * 24
-    # 24時間以内なら
-    ((Time.now - time) / 3600).to_i.to_s + "時間前"
-  elsif (Date.today - time.to_date) <= 30
-    # 30日以内なら
-    (Date.today - time.to_date).to_i.to_s + "日前"
-  else
-    # それ以降
-    time
-  end
-end
 
 enable :sessions
+use Rack::Flash
 
 helpers do
   def logged_in?
@@ -146,7 +133,7 @@ get '/group/:id' do
   login_required
   @group = Group.find_by(id: params[:id])
   @group_users = @group.users
-  @contributions = @group.contributions
+  @contributions = @group.contributions.order(id: :desc)
   @page_title = @group.name
   @role = {
     'mentor': 'メンター',
@@ -172,6 +159,13 @@ get '/group/:id' do
     'doing' => ['badge-primary', '取り掛かり中'],
     'done' => ['badge-success', '終わり']
   }
+  if flash[:notice]
+    @flash = {
+      'type' => flash[:type],
+      'message' => flash[:notice]
+    }
+    flash[:notice] = nil
+  end
   erb :group
 end
 
@@ -232,10 +226,16 @@ end
 # メンター権限の付与
 post '/give_permission/:user_id' do
   user = User.find_by(name: params[:user_id])
-  if user
+  if user.nil?
+    return 'fail'
+  elsif user.role == 'mentor'
+    return 'already mentor'
+  elsif user
     user.role = 'mentor'
     user.save
+    return 'success'
   end
+
   p user
   redirect '/give_permission'
 end
@@ -250,7 +250,8 @@ post '/create_group' do
     group_id: group.id,
     user_id: current_user.id
   )
-
+  flash[:notice] = 'グループを作成しました！'
+  flash[:type] = 'success'
   redirect "group/#{group.id}"
 end
 
@@ -258,11 +259,16 @@ end
 post '/invite_user/:group_id/:user_id' do
   group_id = params[:group_id]
   user = User.find_by(name: params[:user_id])
-  if !!user
+  if user.nil?
+    return 'fail'
+  elsif !!user && UserGroup.find_by(user_id: user.id, group_id: group_id)
+    return 'already exists'
+  elsif !!user && UserGroup.find_by(user_id: user.id, group_id: group_id).nil?
     UserGroup.create!(
       user_id: user.id,
       group_id: group_id
     )
+    return 'success'
   end
 end
 
@@ -284,6 +290,8 @@ post '/edit_contribution/:group_id/:contribution_id' do
   contribution = Contribution.find_by(id: params[:contribution_id])
   contribution.body = params[:body]
   contribution.save
+  flash[:notice] = '編集が完了しました！'
+  flash[:type] = 'success'
   redirect "/group/#{params[:group_id]}"
 end
 
@@ -291,6 +299,8 @@ end
 post '/destroy_contribution/:group_id/:contribution_id' do
   # データが見つからなかった時のエラーハンドリングが後々必要
   Contribution.find_by(id: params[:contribution_id]).destroy
+  flash[:notice] = '投稿の削除が完了しました！'
+  flash[:type] = 'success'
   redirect "/group/#{params[:group_id]}"
 end
 
@@ -303,13 +313,22 @@ post '/create_contribution/:user_id/:group_id' do
     user_id: params[:user_id],
     group_id: params[:group_id]
   )
+  flash[:notice] = '投稿が完了しました！'
+  flash[:type] = 'success'
   redirect "group/#{params[:group_id]}"
 end
 
 get '/profile/:id' do
   login_required
   @hoge = User.find_by(id: params[:id])
-  binding.pry
+  # binding.pry
+  if flash[:notice]
+    @flash = {
+      'type' => flash[:type],
+      'message' => flash[:notice]
+    }
+    flash[:notice] = nil
+  end
   erb :profile
 end
 
@@ -326,6 +345,7 @@ post '/change_profile/:id' do
   p user.image
   p user.image.url
   user.save!
-  # binding.pry
+  flash[:notice] = 'プロフィールの変更が完了しました!'
+  flash[:type] = 'success'
   redirect "/profile/#{user.id}"
 end

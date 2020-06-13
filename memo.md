@@ -1,5 +1,3 @@
-# priority
-high, medium, low
+flashを呼び出したい時
 
-# status
-new, doing, done
+・メンター権限与える時

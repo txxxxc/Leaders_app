@@ -1,4 +1,6 @@
 <div class="container permission__container">
+  <div class="admin__alert">
+  </div>
   <form class="group__invite-form permission__form" id="invite-form">
     <div class="form-group mr-2 mb-2">
       <input type="text" class="form-control" id="give-permission-id" placeholder="ユーザーID">
@@ -33,8 +35,24 @@
       $.ajax({
         url: `/give_permission/${user_id}`,
         method: "POST"
-      }).then(n => {
-        console.log({n})
+      }).then(result => {
+        console.log({result})
+        switch(result) {
+          case 'already mentor':
+            $('.alert').remove();
+            $('.admin__alert').append('<div class="alert alert-warning" role="alert">入力されたユーザーはすでにメンターです。</div>')
+            break;
+          case 'success':
+            $('.alert').remove();
+            $('.admin__alert').append('<div class="alert alert-success" role="alert">ユーザーへの権限付与が成功しました！</div>')
+            break;
+          case 'fail':
+            $('.alert').remove();
+            $('.admin__alert').append('<div class="alert alert-danger" role="alert">入力されたユーザーが見つかりませんでした。</div>')
+            break;
+          default:
+            break;
+        }
       },
       (XMLHttpRequest, textStatus, errorThrown) => {
         console.log("XMLHttpRequest : " + XMLHttpRequest.status);

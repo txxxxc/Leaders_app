@@ -1,6 +1,7 @@
 .permission__container {
   height: 100%;
-  background-color: #fafafa
+  background-color: #fafafa;
+  padding-top: 70px;
 }
 
 .permission__form {
@@ -9,5 +10,4 @@
   justify-content: center;
   /* flex-direction: column; */
   margin: auto;
-  padding-top: 70px;
 }
