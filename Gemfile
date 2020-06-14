@@ -15,14 +15,6 @@ gem 'rake'
 
 gem 'activerecord', '5.2.3'
 
-group :development do
-  gem 'pry'
-  gem 'rubocop'
-  gem 'rubocop-config-prettier'
-  gem 'rubocop-performance'
-  gem 'sqlite3', '~> 1.4.1'
-end
-
 gem "bcrypt", "~> 3.1"
 
 gem "carrierwave", "~> 2.1"
@@ -32,6 +24,14 @@ gem "mini_magick", "~> 4.10"
 gem "sinatra-flash", "~> 0.3.0"
 
 gem "rack-flash3", "~> 1.0"
+
+group :development do
+  gem 'pry'
+  gem 'rubocop'
+  gem 'rubocop-config-prettier'
+  gem 'rubocop-performance'
+  gem 'sqlite3', '~> 1.4.1'
+end
 
 group :production do
   gem 'pg' , '0.21.0'
