@@ -32,3 +32,7 @@ gem "mini_magick", "~> 4.10"
 gem "sinatra-flash", "~> 0.3.0"
 
 gem "rack-flash3", "~> 1.0"
+
+group :production do
+  gem 'pg' , '0.21.0'
+end
