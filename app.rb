@@ -5,11 +5,11 @@ Bundler.require
 require 'sinatra'
 require 'sinatra/reloader' if development?
 require 'sinatra/activerecord'
-require './models/models.rb'
 require 'pry'
 require 'carrierwave'
 require 'carrierwave/orm/activerecord'
 require 'rack-flash'
+require './models/models.rb'
 
 
 CarrierWave.configure do |config|
