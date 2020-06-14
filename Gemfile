@@ -36,3 +36,4 @@ end
 group :production do
   gem 'pg' , '0.21.0'
 end
+gem "puma", "~> 4.3"
