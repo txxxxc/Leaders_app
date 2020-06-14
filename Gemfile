@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 source 'https://rubygems.org'
+ruby '2.6.6'
 
 git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 
@@ -31,3 +32,5 @@ gem "mini_magick", "~> 4.10"
 gem "sinatra-flash", "~> 0.3.0"
 
 gem "rack-flash3", "~> 1.0"
+
+gem "puma", "~> 4.3"
