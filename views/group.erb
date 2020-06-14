@@ -1,4 +1,11 @@
 <div class="container group__container">
+  <div class="group__alert">
+    <% if @flash %>
+      <div class="alert alert-<%= @flash["type"] %>" role="alert">
+        <%= @flash["message"] %>
+      </div>
+    <% end %>
+  </div>
   <h1><%= @group.name %></h1>
 
   <nav class="group__tab">
@@ -36,16 +43,16 @@
               <h5 class="card-title"><%= contribution.user.name %></h5>
               <p class="card-text"><%= contribution.body %></p>
               <div class="card__information">
-                <p class="card-text"><small class="text-muted"><%= contribution.created_at %></small></p>
+                <p class="card-text"><small class="text-muted"><%= contribution.created_at.in_time_zone('Tokyo').strftime("%Y/%m/%d %T") %></small></p>
 
               <%# ここのコード汚すぎへんか？ %>
                 <% if contribution.user_id == @user.id || @user.role == 'mentor' %>
-                  <select class="form-control card__priority text-white <%= @priority_color[contribution.priority]%>" id="card-priority" name="priority <%=contribution.id %>">
+                  <select class="form-control card__select card__priority text-white <%= @priority_color[contribution.priority]%>" id="card-priority" name="priority <%=contribution.id %>">
                     <option value="high"   <%= 'selected' if contribution.priority == 'high'%>   >やばい</option>
                     <option value="medium" <%= 'selected' if contribution.priority == 'medium'%> >まあまあ</option>
                     <option value="low"    <%= 'selected' if contribution.priority == 'low'%>    >できれば</option>
                   </select>
-                  <select class="form-control card__status text-white <%= @status_color[contribution.status] %>" id="card-status" name="status <%= contribution.id %>">
+                  <select class="form-control card__select card__status text-white <%= @status_color[contribution.status] %>" id="card-status" name="status <%= contribution.id %>">
                     <option value="new"   <%= 'selected' if contribution.status == 'new'%>   >これから</option>
                     <option value="doing" <%= 'selected' if contribution.status == 'doing'%> >取り掛かり中</option>
                     <option value="done"  <%= 'selected' if contribution.status == 'done'%>  >終わり</option>
@@ -122,8 +129,24 @@
       $.ajax({
         url: `/invite_user/${group_id}/${user_id}`,
         method: "POST"
-      }).then(n => {
-        console.log({n})
+      }).then(result => {
+        console.log(result)
+        switch(result) {
+          case 'already exists':
+            $('.alert').remove();
+            $('.group__alert').append('<div class="alert alert-warning" role="alert">入力されたユーザーはすでに招待されています。</div>')
+            break;
+          case 'success':
+            $('.alert').remove();
+            $('.group__alert').append('<div class="alert alert-success" role="alert">ユーザーの招待に成功しました！</div>')
+            break;
+          case 'fail':
+            $('.alert').remove();
+            $('.group__alert').append('<div class="alert alert-danger" role="alert">入力されたユーザーが見つかりませんでした。</div>')
+            break;
+          default:
+            break;
+        }
       },
       (XMLHttpRequest, textStatus, errorThrown) => {
         console.log("XMLHttpRequest : " + XMLHttpRequest.status);
@@ -132,7 +155,7 @@
       })
     })
     //セレクトボックスが切り替わったら発動
-    $('select').change(function() {
+    $('.card__select').change(function() {
       //選択したvalue値を変数に格納
       const val = $(this).val();
       const information = $(this)[0].name.split(' ')

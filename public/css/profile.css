@@ -1,0 +1,11 @@
+.profile__container {
+  height: 80vh;
+  background-color: #fafafa;
+  margin-top: 80px;
+}
+
+.profile__contents {
+  display: flex;
+  height: 100%;
+  padding-top: 30px;
+}
