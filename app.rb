@@ -5,7 +5,7 @@ Bundler.require
 require 'sinatra'
 require 'sinatra/reloader' if development?
 require 'sinatra/activerecord'
-require 'pry'
+require 'pry' if development?
 require 'carrierwave'
 require 'carrierwave/orm/activerecord'
 require 'rack-flash'
