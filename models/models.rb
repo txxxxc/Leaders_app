@@ -26,6 +26,8 @@ class Group < ActiveRecord::Base
 end
 
 class Contribution < ActiveRecord::Base
+  extend CarrierWave::Mount
+  mount_uploader :image, ProfileImagesUploader
   belongs_to :user
   belongs_to :group
 end

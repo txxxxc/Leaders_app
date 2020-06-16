@@ -166,7 +166,23 @@ get '/group/:id' do
     }
     flash[:notice] = nil
   end
+  # binding.pry
   erb :group
+end
+
+# 投稿の新規作成
+post '/create_contribution/:user_id/:group_id' do
+  Contribution.create!(
+    body: params[:body],
+    status: 'new',
+    image: params[:image],
+    priority: params[:priority],
+    user_id: params[:user_id],
+    group_id: params[:group_id]
+  )
+  flash[:notice] = '投稿が完了しました！'
+  flash[:type] = 'success'
+  redirect "group/#{params[:group_id]}"
 end
 
 # 投稿編集画面
@@ -304,19 +320,6 @@ post '/destroy_contribution/:group_id/:contribution_id' do
   redirect "/group/#{params[:group_id]}"
 end
 
-# 投稿の新規作成
-post '/create_contribution/:user_id/:group_id' do
-  Contribution.create!(
-    body: params[:body],
-    status: 'new',
-    priority: params[:priority],
-    user_id: params[:user_id],
-    group_id: params[:group_id]
-  )
-  flash[:notice] = '投稿が完了しました！'
-  flash[:type] = 'success'
-  redirect "group/#{params[:group_id]}"
-end
 
 get '/profile/:id' do
   login_required
