@@ -6,7 +6,7 @@
   <% end %>
   <div class="row profile__contents">
     <div class="col-3 text-center profile__picture">
-      <img src="<%= @user.image_url %>" width="24px" height="24px" alt="" >
+      <img src="<%= @user.image_url %>" alt="" >
     </div>
     <form class="col-9" action="/change_profile/<%= @user.id %>" method="POST" enctype="multipart/form-data">
       <div class="form-group">
