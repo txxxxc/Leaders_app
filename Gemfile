@@ -13,7 +13,7 @@ gem 'sinatra-activerecord'
 
 gem 'rake'
 
-gem 'activerecord', '5.2.3'
+gem 'activerecord', '6.1.7.1'
 
 gem "bcrypt", "~> 3.1"
 
